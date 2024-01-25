@@ -18,7 +18,7 @@ const Form = () => {
       const Medicine = {
         Name: e.target.MedicineName.value,
         Price: e.target.Price.value,
-        Qty: e.target.Qty.value,
+        Qty: Number(e.target.Qty.value),
         id: Math.random(),
       };
       context.AddItems(Medicine);

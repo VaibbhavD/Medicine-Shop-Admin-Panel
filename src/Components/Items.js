@@ -9,7 +9,7 @@ const Items = () => {
     <>
       {context.Items.map((item) => (
         <ul>
-          <ShowItems item={item} />
+          <ShowItems item={item} key={item.id} />
         </ul>
       ))}
     </>

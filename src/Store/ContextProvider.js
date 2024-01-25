@@ -6,10 +6,11 @@ const ContextProvider = (props) => {
   const [CartItems, setCartItems] = useState([]);
 
   const AddItems = (item) => {
-    setItems((prev) => [...prev, item]);
+    setItems((prev) => [...prev, { ...item }]);
   };
   const AddCart = (item) => {
-    setCartItems((prev) => [...prev, item]);
+    console.log(item);
+    setCartItems((prev) => [...prev, { ...item }]);
   };
   const RemoveItem = (item) => {
     Items.filter((Item) => Item.id !== item.id);

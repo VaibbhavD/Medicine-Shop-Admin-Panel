@@ -5,31 +5,33 @@ import Context from "../Store/Context";
 
 const ShowItems = (props) => {
   const context = useContext(Context);
-  const [qty, setqty] = useState(props.item.Qty);
+  const [qty, setqty] = useState(Number(props.item.Qty));
 
   const SubmitHandler = (e) => {
     e.preventDefault();
-    if (qty > 0) {
-      context.AddCart([{ ...props.item }, (props.item.Qty = qty)]);
-      console.log(props.item.Qty);
-      // context.Items.map((item) =>
-      //   item.id === props.item.id ? (item.Qty = item.Qty - qty) : null
-      // );
+    setqty((prev) => prev - e.target.qty.value);
+
+    let Add = false;
+
+    if (e.target.qty.value > 0) {
+      context.Cart.map((item) =>
+        item.id === props.item.id
+          ? ((item.Qty = Number(item.Qty) + Number(e.target.qty.value)),
+            (Add = true))
+          : null
+      );
+      if (!Add) {
+        context.AddCart(props.item, (props.item.Qty = e.target.qty.value));
+      }
     }
-    console.log(context.Cart);
+    e.target.qty.value = 0;
   };
 
   return (
     <li key={props.item.id}>
-      Name-{props.item.Name} Price-{props.item.Price} Qty-{props.item.Qty}
+      Name-{props.item.Name} Price-{props.item.Price} Qty-{qty}
       <form onSubmit={SubmitHandler}>
-        <Input
-          type="number"
-          min="1"
-          name="qty"
-          max={qty}
-          onChange={(e) => setqty(e.target.value)}
-        />
+        <Input type="number" min="1" name="qty" max={qty} />
 
         <Button type="submit">Add Cart</Button>
       </form>
