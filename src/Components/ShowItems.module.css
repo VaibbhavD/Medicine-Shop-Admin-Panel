@@ -1,0 +1,29 @@
+.li {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: auto;
+}
+.li li {
+  margin-top: -1rem;
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  text-align: center;
+}
+.li form {
+  display: flex;
+  width: 2rem;
+  margin-top: -1.2rem;
+  width: 20%;
+}
+.li form input {
+  width: 20%;
+  height: 50%;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+.li form Button {
+  margin-left: 1rem;
+  margin-top: 1rem;
+}

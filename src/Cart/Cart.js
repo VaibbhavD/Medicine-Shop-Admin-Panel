@@ -26,6 +26,7 @@ const Cart = (props) => {
         ) : (
           <h3>Cart Is Empty!</h3>
         )}
+        <h4>Total Amount - {context.total}</h4>
         <Button onClick={diesableshow}>Close</Button>
       </ul>
     </Modal>

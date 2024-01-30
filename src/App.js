@@ -19,6 +19,7 @@ function App() {
     <>
       {show && <Cart enableshow={enableshow} diesableshow={diesableshow} />}
       <Header enableshow={enableshow} />
+      <hr></hr>
       <Items />
     </>
   );

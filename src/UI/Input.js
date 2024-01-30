@@ -1,9 +1,10 @@
 import React from "react";
+import classes from "./Input.module.css";
 
 const Input = (props) => {
   return (
-    <div>
-      <label htmlFor={props.label}>{props.label}</label>
+    <div className={classes.div}>
+      <label htmlFor={props.label}>{props.label} - </label>
       <input
         type={props.tyep}
         placeholder={props.placeholder}

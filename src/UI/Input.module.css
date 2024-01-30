@@ -1,0 +1,19 @@
+.div {
+  display: flex;
+  width: 30%;
+  margin: auto;
+  margin-top: 1rem;
+  margin-right: 28rem;
+}
+.div label {
+  /* margin: auto; */
+  width: 30%;
+  text-align: right;
+  margin-right: 1rem;
+}
+.div input {
+  width: 20%;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  /* margin: auto; */
+}
