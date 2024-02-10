@@ -17,6 +17,7 @@ const Items = () => {
 
   return (
     <>
+      ()
       <h1>Inventory</h1>
       {context.Items.map((item) => (
         <ul className="items">

@@ -11,10 +11,10 @@ const ShowItems = (props) => {
   const SubmitHandler = (e) => {
     e.preventDefault();
     setqty((prev) => prev - e.target.qty.value);
-
-    let Add = false;
+    console.log(e.target.qty.value);
 
     if (e.target.qty.value > 0) {
+      let Add = false;
       context.Cart.map((item) =>
         item.id === props.item.id
           ? ((item.Qty = Number(item.Qty) + Number(e.target.qty.value)),
@@ -25,7 +25,6 @@ const ShowItems = (props) => {
         context.AddCart(props.item, (props.item.Qty = e.target.qty.value));
       }
     }
-    context.Addtotal(props.item.Price * props.item.Qty);
     e.target.qty.value = 0;
   };
 

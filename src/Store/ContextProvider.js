@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Context from "./Context";
 
 const ContextProvider = (props) => {
@@ -8,14 +8,43 @@ const ContextProvider = (props) => {
 
   const AddItems = (item) => {
     setItems((prev) => [...prev, { ...item }]);
+
+    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62/User", {
+      method: "POST",
+      body: JSON.stringify(item),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
   };
+
+  useEffect(() => {
+    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62/User")
+      .then((res) => res.json())
+      .then((data) => setItems(data));
+  }, []);
+
   const AddCart = (item) => {
     console.log(item);
     setCartItems((prev) => [...prev, { ...item }]);
+
+    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62", {
+      method: "POST",
+      body: JSON.stringify(item),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
   };
-  const RemoveItem = (item) => {
-    Items.filter((Item) => Item.id !== item.id);
-  };
+
+  useEffect(() => {
+    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.length > 1) setCartItems(data);
+      });
+  }, []);
+
   const RemoveCart = (item) => {
     CartItems.filter((Item) => Item.id !== item.id);
   };

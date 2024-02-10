@@ -7,10 +7,20 @@ import CartItem from "./CartItem";
 const Cart = (props) => {
   const context = useContext(Context);
   const [empty, setempty] = useState(false);
+  const [total, settotal] = useState();
+  const [cart, setcart] = useState(context.Cart);
 
   const diesableshow = () => {
     props.diesableshow();
   };
+
+  useEffect(() => {
+    let total = context.Cart.reduce(
+      (sum, item) => sum + item.Price * item.Qty,
+      0
+    );
+    settotal(total);
+  }, []);
 
   useEffect(() => {
     if (context.Cart.length !== 0) {
@@ -22,11 +32,11 @@ const Cart = (props) => {
     <Modal>
       <ul>
         {empty === true ? (
-          context.Cart.map((item) => <CartItem item={item} />)
+          cart.map((item) => <CartItem item={item} />)
         ) : (
           <h3>Cart Is Empty!</h3>
         )}
-        <h4>Total Amount - {context.total}</h4>
+        <h4>Total Amount -{total}</h4>
         <Button onClick={diesableshow}>Close</Button>
       </ul>
     </Modal>
