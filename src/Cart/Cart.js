@@ -8,7 +8,6 @@ const Cart = (props) => {
   const context = useContext(Context);
   const [empty, setempty] = useState(false);
   const [total, settotal] = useState();
-  const [cart, setcart] = useState(context.Cart);
 
   const diesableshow = () => {
     props.diesableshow();
@@ -32,7 +31,7 @@ const Cart = (props) => {
     <Modal>
       <ul>
         {empty === true ? (
-          cart.map((item) => <CartItem item={item} />)
+          context.Cart.map((item) => <CartItem item={item} />)
         ) : (
           <h3>Cart Is Empty!</h3>
         )}

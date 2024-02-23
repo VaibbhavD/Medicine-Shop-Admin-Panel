@@ -14,21 +14,13 @@ const Form = (props) => {
   const SubmitHandler = (e) => {
     e.preventDefault();
 
-    if (
-      e.target.MedicineName.value !== null &&
-      e.target.Price.value !== null &&
-      e.target.Qty.value > 0
-    ) {
-      const Medicine = {
-        Name: e.target.MedicineName.value,
-        Price: Number(e.target.Price.value),
-        Qty: Number(e.target.Qty.value),
-        id: Math.random(),
-      };
-      context.AddItems(Medicine);
-    } else {
-      alert("Please Add Values Properly");
-    }
+    const Medicine = {
+      Name: e.target.MedicineName.value,
+      Price: Number(e.target.Price.value),
+      Qty: Number(e.target.Qty.value),
+      id: Math.random(),
+    };
+    context.AddItems(Medicine);
   };
 
   return (

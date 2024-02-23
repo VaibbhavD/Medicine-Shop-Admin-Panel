@@ -7,50 +7,132 @@ const ContextProvider = (props) => {
   const [total, settotal] = useState(0);
 
   const AddItems = (item) => {
-    setItems((prev) => [...prev, { ...item }]);
-
-    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62/User", {
-      method: "POST",
-      body: JSON.stringify(item),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+    fetch(
+      "https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/User.json",
+      {
+        method: "POST",
+        body: JSON.stringify(item),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setItems((prev) => [...prev, { ...item, name: data.name }]);
+      });
   };
 
   useEffect(() => {
-    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62/User")
+    fetch("https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/User.json")
       .then((res) => res.json())
-      .then((data) => setItems(data));
+      .then((data) => {
+        let temp = [];
+        for (const key in data) {
+          console.log(key);
+          temp.push({ ...data[key], name: key });
+        }
+        setItems(temp);
+      });
   }, []);
 
   const AddCart = (item) => {
-    console.log(item);
-    setCartItems((prev) => [...prev, { ...item }]);
+    const NewItem = CartItems.find((Item) => Item.id === item.id);
+    UpdateItems(item);
 
-    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62", {
-      method: "POST",
-      body: JSON.stringify(item),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+    if (NewItem) {
+      UpdateCart(item);
+      NewItem.Qty = NewItem.Qty + item.Qty;
+    } else {
+      fetch(
+        "https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/Cart.json",
+        {
+          method: "POST",
+          body: JSON.stringify(item),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setCartItems((prev) => [...prev, { ...item, name: data.name }]);
+        });
+    }
+  };
+
+  const RemoveItem = (item) => {
+    const temp = Items.filter((Item) => Item.name !== item.name);
+    fetch(
+      `https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/User/${item.name}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+    setItems(temp);
   };
 
   useEffect(() => {
-    fetch("https://crudcrud.com/api/7bfb46669b604c0d8d4b60c85db02d62")
+    fetch("https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/Cart.json")
       .then((res) => res.json())
       .then((data) => {
-        if (data.length > 1) setCartItems(data);
+        let temp = [];
+        for (const key in data) {
+          temp.push({ ...data[key], name: key });
+        }
+        setCartItems(temp);
       });
   }, []);
 
   const RemoveCart = (item) => {
-    CartItems.filter((Item) => Item.id !== item.id);
+    const temp = CartItems.filter((Item) => Item.id !== item.id);
+
+    fetch(
+      `https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/Cart/${item.name}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+    setCartItems(temp);
   };
   const AddTotal = (worth) => {
     console.log(total);
     settotal((prev) => prev + worth);
+  };
+
+  const UpdateItems = (Item) => {
+    const NewItem = Items.find((item) => item.name === Item.name);
+    const updateitem = {
+      id: NewItem.id,
+      Name: NewItem.Name,
+      Price: NewItem.Price,
+      Qty: NewItem.Qty - Item.Qty,
+      name: NewItem.name,
+    };
+    fetch(
+      `https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/User/${Item.name}.json`,
+      {
+        method: "PUT",
+        body: JSON.stringify(updateitem),
+      }
+    );
+  };
+  const UpdateCart = (Item) => {
+    const NewItem = CartItems.find((item) => item.id === Item.id);
+    const updateitem = {
+      id: NewItem.id,
+      Name: NewItem.Name,
+      Price: NewItem.Price,
+      Qty: NewItem.Qty + Item.Qty,
+      name: NewItem.name,
+    };
+    fetch(
+      `https://expense-tracker-f0c7b-default-rtdb.firebaseio.com/Cart/${NewItem.name}.json`,
+      {
+        method: "PUT",
+        body: JSON.stringify(updateitem),
+      }
+    );
   };
 
   const context = {
@@ -58,6 +140,8 @@ const ContextProvider = (props) => {
     Cart: CartItems,
     AddItems: AddItems,
     AddCart: AddCart,
+    RemoveCart: RemoveCart,
+    RemoveItem: RemoveItem,
     Addtotal: AddTotal,
     total: total,
   };

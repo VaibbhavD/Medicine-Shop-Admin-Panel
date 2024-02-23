@@ -10,23 +10,22 @@ const ShowItems = (props) => {
 
   const SubmitHandler = (e) => {
     e.preventDefault();
-    setqty((prev) => prev - e.target.qty.value);
-    console.log(e.target.qty.value);
+    setqty(qty - e.target.qty.value);
+    context.AddCart({
+      id: props.item.id,
+      Name: props.item.Name,
+      Price: props.item.Price,
+      Qty: Number(e.target.qty.value),
+      name: props.item.name,
+    });
 
-    if (e.target.qty.value > 0) {
-      let Add = false;
-      context.Cart.map((item) =>
-        item.id === props.item.id
-          ? ((item.Qty = Number(item.Qty) + Number(e.target.qty.value)),
-            (Add = true))
-          : null
-      );
-      if (!Add) {
-        context.AddCart(props.item, (props.item.Qty = e.target.qty.value));
-      }
-    }
     e.target.qty.value = 0;
   };
+
+  if (qty === 0) {
+    context.RemoveItem(props.item);
+  }
+  console.log(props.item.name);
 
   return (
     <div className={classes.li}>
@@ -36,6 +35,9 @@ const ShowItems = (props) => {
           <input type="number" min="1" name="qty" max={qty} />
 
           <Button type="submit">Add Cart</Button>
+          <Button type="button" onClick={() => context.RemoveItem(props.item)}>
+            Remove
+          </Button>
         </form>
       </li>
     </div>
